@@ -15,6 +15,7 @@ window_height_change = True
 
 padx_label = 8
 
+
 Window_wahadlo = tk.Tk()
 Window_wahadlo.update_idletasks()
 Window_wahadlo.option_add( "*font", main_font)
@@ -24,23 +25,25 @@ Window_wahadlo.option_add( "*font", main_font)
 Window_wahadlo.title(window_title)
 Window_wahadlo.geometry(f"{window_width}x{window_height}+{window_Xposition}+{window_Yposition}")
 Window_wahadlo.resizable(width=window_width_change, height=window_height_change)
-
 # Window_wahadlo.iconbitmap('c:\sddas')
 
 
 
-Window_Frame = tk.Frame(Window_wahadlo, padx=5, pady=5)
+Window_Frame = tk.Frame(Window_wahadlo, padx=5, pady=5, bg='yellow')
 # Window_Frame.pack(fill="both", expand="yes")
 Window_Frame.grid(row=0, column=0, columnspan=2)
-Window_Label = tk.Label(Window_Frame, text=window_title, font=title_font, width=38)
+Window_Label = tk.Label(Window_Frame, text=window_title, font=title_font)
 Window_Label.pack(fill="both", expand="yes")
 
 frame_visualisation = tk.Frame(Window_wahadlo, padx=5, pady=5, bg='red')
-frame_visualisation.grid(row=1, column=1, sticky='e')
+frame_visualisation.grid(row=1, column=1, sticky='wn')
+
+C = tk.Canvas(frame_visualisation, bg="blue", height=300, width=330)
+C.pack()
 
 ## Frame LEWY
-frame_left = tk.Frame(Window_wahadlo, padx=5, pady=5)
-frame_left.grid(row=1, column=0, sticky='w')
+frame_left = tk.Frame(Window_wahadlo, padx=5, pady=5, bg='green')
+frame_left.grid(row=1, column=0, sticky='wn')
 
 ##  (frama lewego)
 ## ----- # górny frame "Górne wahadlo"
@@ -81,20 +84,22 @@ Entry_L2.grid(row=0, column=1)
 Entry_Th2.grid(row=1, column=1)
 Entry_M2.grid(row=2, column=1)
 
-## ----- # dolny frame 2 "dodatki 1"
-# Right_Frame = tk.LabelFrame(frame_left, padx=5, pady=5, text="Współrzeędne", font=sub_font, width=250, height=80)
-# Right_Frame.grid(row=2, column=0, sticky='e', padx=5, pady=0, ipadx=0, ipady=0)
-# label_W0 = tk.Label(Right_Frame, text=f"(x\u2080, y\u2080) ", padx=padx_label)
-# label_W1 = tk.Label(Right_Frame, text=f"(x\u2081, y\u2081) ", padx=padx_label)
-# label_W2 = tk.Label(Right_Frame, text=f"(x\u2082, y\u2082) ", padx=padx_label)
-#
+# ----- # dolny frame 2 "dodatki 1"
+Right_Frame_exopander = tk.Frame(frame_left, padx=5, pady=5, bg='orange', width=400, relief='raised', borderwidth=5)
+Right_Frame_exopander.grid(row=2, column=0)
+Right_Frame = tk.LabelFrame(Right_Frame_exopander, padx=5, pady=5, text="Współrzeędne", font=sub_font, width=350, bg='black')
+Right_Frame.pack(fill="both", expand="yes")
+label_W0 = tk.Label(Right_Frame, text=f"(x\u2080, y\u2080) ", padx=padx_label)
+label_W1 = tk.Label(Right_Frame, text=f"(x\u2081, y\u2081) ", padx=padx_label)
+label_W2 = tk.Label(Right_Frame, text=f"(x\u2082, y\u2082) ", padx=padx_label)
+
 # Entry_L2 = tk.Entry(Right_Frame, borderwidth=2, width=10)
 # Entry_Th2 = tk.Entry(Right_Frame, borderwidth=2, width=10)
 # Entry_M2 = tk.Entry(Right_Frame, borderwidth=2, width=10)
-#
-# label_W0.grid(row=0, column=0, sticky='e')
-# label_W1.grid(row=1, column=0, sticky='e')
-# label_W2.grid(row=2, column=0, sticky='e')
+
+label_W0.grid(row=0, column=0, sticky='wn')
+label_W1.grid(row=1, column=0, sticky='wn')
+label_W2.grid(row=2, column=0, sticky='wn')
 # Entry_L2.grid(row=0, column=1)
 # Entry_Th2.grid(row=1, column=1)
 # Entry_M2.grid(row=2, column=1)
