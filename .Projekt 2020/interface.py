@@ -3,6 +3,9 @@ from tkinter import messagebox
 from tkinter import ttk
 from numpy import sin,cos
 #
+
+def pull_icon(root,icon):
+    root.iconbitmap(icon)
 def canvas_X(x):
     return canvas_width // 2 + x
 def canvas_Y(y):
@@ -93,46 +96,45 @@ test_id = 0
 test=False
 keypressed = False
 
-window_title = " Wahadło podwójne - v1.0"
+window_ico = 'ico2_32_32.ico'
+window_title = " Wahadło podwójne - v1.0 Beta"
 
 main_font = "Times 12 "
 sub_font = "Times 10 italic"
 title_font = "Times 20 bold italic"
 
-window_width = 600
-window_height = 550
-window_Xposition = 100
-window_Yposition = 100
 window_width_change = True
 window_height_change = True
 
 padx_label = 8
 align_entry = 'right'
 
-color_list = (None, 'red')
+color_list = (None, 'white', 'red')
+bg_canvas = color_list[1]
 bg_button = color_list[0]
 
 canvas_width = 300
 canvas_height = 300
 
-
-
 if test:
     test_interfecu()
 
 Window_wahadlo = tk.Tk()
+x_position = Window_wahadlo.winfo_screenwidth()
+y_position = Window_wahadlo.winfo_screenheight()
+window_width = 600
+window_height = 550
+window_Xposition = (x_position-window_width)//2
+window_Yposition = (y_position-window_height)//2
 Window_wahadlo.update_idletasks()
 Window_wahadlo.option_add( "*font", main_font)
 # Window_wahadlo.option_add('*Dialog.msg.font', main_font)
-x_position = Window_wahadlo.winfo_screenwidth()
-y_position = Window_wahadlo.winfo_screenheight()
 
 ## Okno główne
 Window_wahadlo.title(window_title)
 Window_wahadlo.geometry(f"{window_width}x{window_height}+{window_Xposition}+{window_Yposition}")
 Window_wahadlo.resizable(width=window_width_change, height=window_height_change)
-Window_wahadlo.iconbitmap('ico2_32_32.ico')
-
+pull_icon(Window_wahadlo, window_ico)
 
 # ------------------------------Tytuł ----------------------
 Window_Frame = tk.Frame(Window_wahadlo, padx=5, pady=5,
@@ -151,7 +153,7 @@ Labelframe_visualisation = tk.LabelFrame(Frame_visualisation,
                                          font=sub_font)
 Labelframe_visualisation.grid(row=0, column=0, sticky='w')
 
-C = tk.Canvas(Labelframe_visualisation, height=canvas_height, width=canvas_width, bg=test_colours['canvas'][test_id])
+C = tk.Canvas(Labelframe_visualisation, height=canvas_height, width=canvas_width, bg=bg_canvas)
 
 C.pack()
 coord = 10, 50, 240, 210
@@ -248,27 +250,27 @@ Bottom_Frame.grid(row=0, column=0)
 
 
 
-#Make the notebook
+# Notebook
 nb = ttk.Notebook(Bottom_Frame, width=400, height=100)
 nb.pack()
 
-#Make 1st tab
+# Tworzenie pierwszej zakładki
 f1 = tk.Frame(nb)
 f1_menu = tk.Label(f1, text="tu beda do wyboru wykresy")
 f1_menu.grid(row=0, column=0)
 
-#Add the tab
+#Dodawanie pierwszej zakładki
 nb.add(f1, text="Wykresy")
-#Make 2nd tab
+# Tworzenie drugiej zakładki
 f2 = tk.Frame(nb)
-#Add 2nd tab
+#Dodawanie drugiej zakładki
 nb.add(f2, text="Ustawienia")
-#Make 2nd tab
+# Tworzenie trzeciej zakładki
 f3 = tk.Frame(nb)
 f1_menu3 = tk.Label(f3, text="zrób ikonke do naszego \nprogramu !!", font=title_font, bg='white', width=25, height=3)
 f1_menu3.grid(row=0, column=0)
 
-#Add 2nd tab
+#Dodawanie trzeciej zakładki
 nb.add(f3, text="Jan Kurek")
 
 nb.select(f1)
