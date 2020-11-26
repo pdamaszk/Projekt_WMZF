@@ -265,7 +265,7 @@ f2 = tk.Frame(nb)
 nb.add(f2, text="Ustawienia")
 #Make 2nd tab
 f3 = tk.Frame(nb)
-f1_menu3 = tk.Label(f3, text="zrób icone do naszego \nprogramu !!", font=title_font)
+f1_menu3 = tk.Label(f3, text="zrób ikonke do naszego \nprogramu !!", font=title_font, bg='white', width=25, height=3)
 f1_menu3.grid(row=0, column=0)
 
 #Add 2nd tab
