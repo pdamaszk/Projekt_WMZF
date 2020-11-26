@@ -131,7 +131,7 @@ y_position = Window_wahadlo.winfo_screenheight()
 Window_wahadlo.title(window_title)
 Window_wahadlo.geometry(f"{window_width}x{window_height}+{window_Xposition}+{window_Yposition}")
 Window_wahadlo.resizable(width=window_width_change, height=window_height_change)
-# Window_wahadlo.iconbitmap('c:\sddas')
+Window_wahadlo.iconbitmap('ico2_32_32.ico')
 
 
 # ------------------------------Tytuł ----------------------
@@ -216,7 +216,7 @@ label_W01 = tk.Label(Right_Frame, text="(0, 0)", width=10, anchor='w')
 label_W11 = tk.Label(Right_Frame, textvariable=W1, width=10, anchor='w')
 label_W21 = tk.Label(Right_Frame, textvariable=W2, width=10, anchor='w')
 Button_calc_coord = tk.Button(Right_Frame,
-                              text= "Przelicz współrzędne wahadeł",
+                              text= "Pokaż podgląd",
                               command=checkvariables,
                               padx=10,
                               pady=2,
