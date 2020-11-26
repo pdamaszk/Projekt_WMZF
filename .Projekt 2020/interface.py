@@ -12,20 +12,55 @@ def canvas_Y(y):
     return canvas_height // 2 - y
 
 def Calc_please(L1, Th1, L2, Th2):
-    x1 = round(L1 * sin(Th1), 2)
-    y1 = round(- L1 * cos(Th1))
-    x2 = round(x1 + L2 * sin(Th2))
-    y2 = round(y1 - L2 * cos(Th1))
+    x1 = (L1 * sin(Th1))
+    y1 = (-L1 * cos(Th1))
+    x2 = (x1 + L2 * sin(Th2))
+    y2 = (y1 - L2 * cos(Th2))
 
-    x1y1 = f"({x1}, {y1})"
-    x2y2 = f"({x2}, {y2})"
+    x1y1 = f"({round(x1, 2)}, {round(y1, 2)})"
+    x2y2 = f"({round(x2, 2)}, {round(y2, 2)})"
     W1.set(x1y1)
     W2.set(x2y2)
+    draw_pendulum(x1, y1, x2, y2)
+
+def draw_pendulum(x1, y1, x2, y2):
+    norm_x = (abs(x1) + abs(x2))/canvas_X(0)
+    norm_y = (abs(y1) + abs(y2))/canvas_Y(0)
+    if norm_x > norm_y:
+        norm = norm_x
+    else:
+        norm = norm_y
+    if norm > 1:
+        norm *= 1.1
+    else:
+        norm *= 1.1
+
+    x0 = canvas_X(0)
+    y0 = canvas_Y(0)
+    x1 /= norm
+    x1 = canvas_X(int(x1))
+    print(x1)
+    y1 /= norm
+    y1 = canvas_Y(int(y1))
+    x2 /= norm
+    x2 = canvas_X(int(x2))
+    y2 /= norm
+    y2 = canvas_Y(int(y2))
     C.delete("all")
-    coord1 = canvas_X(0), canvas_Y(0), canvas_X(x1), canvas_Y(y1)
-    C.create_line(coord1, fill='black', width=3)
+    coord_ox = 20, y0, canvas_width-20, y0
+    coord_oy = x0, 20, x0, canvas_height-20
+    coord1 = x0, y0, x1, y1
+    coord2 = x1, y1 , x2, y2
+    C.create_line(coord_ox, fill='#cccccc')
+    C.create_line(coord_oy, fill='#cccccc')
+    C.create_line(coord1, fill='black', width=2)
+    C.create_line(coord2, fill='black', width=2)
+    create_circle(C,x0, y0, 3, fill="black", outline="black", width=1)
+    create_circle(C,x1, y1, 5, fill="blue", outline="black", width=2)
+    create_circle(C,x2, y2, 5, fill="red", outline="black", width=2)
 
-
+def create_circle(self, x, y, r, **kwargs):
+    return self.create_oval(x-r, y-r, x+r, y+r, **kwargs)
 
 def checkvariables():
 
@@ -197,6 +232,7 @@ Entry_L2 = tk.Entry(Left_Frame_2, borderwidth=2, width=10)
 Entry_Th2 = tk.Entry(Left_Frame_2, borderwidth=2, width=10)
 Entry_M2 = tk.Entry(Left_Frame_2, borderwidth=2, width=10)
 
+
 label_L2.grid(row=0, column=0, sticky='e')
 label_Th2.grid(row=1, column=0, sticky='e')
 label_M2.grid(row=2, column=0, sticky='e')
@@ -251,8 +287,8 @@ Bottom_Frame.grid(row=0, column=0)
 
 
 # Notebook
-nb = ttk.Notebook(Bottom_Frame, width=400, height=100)
-nb.pack()
+nb = ttk.Notebook(Bottom_Frame)
+nb.grid(row=0, column=0, columnspan=2, sticky='NEWS')
 
 # Tworzenie pierwszej zakładki
 f1 = tk.Frame(nb)
