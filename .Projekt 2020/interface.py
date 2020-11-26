@@ -11,21 +11,59 @@ def Calc_please(L1, Th1, L2, Th2):
     x2y2 = f"({x2}, {y2})"
     W1.set(x1y1)
     W2.set(x2y2)
-    return 0
 
 def checkvariables():
+    # try:
+
     try:
         L1 = float(Entry_L1.get())
+    except:
+        Entry_L1.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawde długość ramienia górnego wahadła\t")
+        Entry_L1.focus()
+        return
+
+    try:
         Th1 = float(Entry_Th1.get())
+    except:
+        Entry_Th1.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawdy kąt górnego wahadła\t")
+        Entry_Th1.focus()
+        return
+
+    try:
         M1 = float(Entry_M1.get())
+    except:
+        Entry_M1.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawa wartość masy górnego wahadła\t")
+        Entry_M1.focus()
+        return
+    try:
         L2 = float(Entry_L2.get())
+    except:
+        Entry_L2.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawde długość ramienia dolnego wahadła\t")
+        Entry_L2.focus()
+        return
+    try:
         Th2 = float(Entry_Th2.get())
+    except:
+        Entry_Th2.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawdy kąt dolnego wahadła\t")
+        Entry_Th2.focus()
+        return
+    try:
         M2 = float(Entry_M2.get())
         Calc_please(L1, Th1, L2, Th2)
-
     except:
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawde dane\t")
+        Entry_M2.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawa wartość masy dolnego wahadła\t")
+        Entry_M2.focus()
+        return
 
+
+    # except:
+    #     pass
 
 # testowanie zawartosci okna
 def test_interfecu():
@@ -41,7 +79,7 @@ test_colours = { 'title':(None,'yellow'),
 
 
 test_id = 0
-test=True
+test=False
 
 
 window_title = " Wahadło podwójne - v1.0"
@@ -50,7 +88,7 @@ main_font = "Times 12 "
 sub_font = "Times 10 italic"
 title_font = "Times 20 bold italic"
 
-window_width = 650
+window_width = 600
 window_height = 480
 window_Xposition = 100
 window_Yposition = 100
@@ -59,7 +97,7 @@ window_height_change = True
 
 padx_label = 8
 
-canvas_width = 280
+canvas_width = 300
 canvas_height = 300
 
 if test:
@@ -96,7 +134,7 @@ Labelframe_visualisation = tk.LabelFrame(Frame_visualisation,
                                          font=sub_font)
 Labelframe_visualisation.grid(row=0, column=0, sticky='w')
 
-C = tk.Canvas(Labelframe_visualisation, height=canvas_height, width=canvas_width)
+C = tk.Canvas(Labelframe_visualisation, height=canvas_height, width=canvas_width, bg=test_colours['canvas'][test_id])
 C.pack()
 coord = 10, 50, 240, 210
 arc = C.create_arc(coord, start=30, extent=90, fill="red")
@@ -160,10 +198,12 @@ label_W01 = tk.Label(Right_Frame, text="(0, 0)", width=10, anchor='w')
 label_W11 = tk.Label(Right_Frame, textvariable=W1, width=10, anchor='w')
 label_W21 = tk.Label(Right_Frame, textvariable=W2, width=10, anchor='w')
 Button_calc_coord = tk.Button(Right_Frame,
-                              text= "Przelicz współrzędne",
+                              text= "Przelicz współrzędne wahadeł",
                               command=checkvariables,
                               padx=10,
-                              pady=2)
+                              pady=2,
+                              relief='raised',
+                              borderwidth=4)
 
 # Entry_L2 = tk.Entry(Right_Frame, borderwidth=2, width=10)
 # Entry_Th2 = tk.Entry(Right_Frame, borderwidth=2, width=10)
@@ -182,7 +222,7 @@ Button_calc_coord.grid(row=4, column=0, columnspan=2)
 # Entry_M2.grid(row=2, column=1)
 
 Window_Frame_bottom = tk.Frame(Window_wahadlo, padx=5, pady=5, bg=test_colours['botton'][test_id], width=700, height=200)
-Window_Frame_bottom.grid(row=2, column=0, columnspan=2)
+Window_Frame_bottom.grid(row=2, column=0, columnspan=2, sticky='w')
 
 Bottom_Frame = tk.LabelFrame(Window_Frame_bottom, padx=5, pady=5, text="", font=sub_font)
 Bottom_Frame.grid(row=0, column=0)
