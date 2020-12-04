@@ -141,7 +141,9 @@ test_id = 0
 test=False
 keypressed = False
 
+# icona
 window_ico = 'ico2_32_32_2.ico'
+# tytuł okna
 window_title = " Wahadło podwójne - v1.0 Beta"
 
 global_font = "Calibri"
