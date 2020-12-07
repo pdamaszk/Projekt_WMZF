@@ -260,12 +260,12 @@ W1 = tk.StringVar()
 W2 = tk.StringVar()
 
 
-label_W0 = tk.Label(Right_Frame, text=f"(x\u2080, y\u2080) = ", width=15, anchor='e')
-label_W1 = tk.Label(Right_Frame, text=f"(x\u2081, y\u2081) = ", width=15, anchor='e')
-label_W2 = tk.Label(Right_Frame, text=f"(x\u2082, y\u2082) = ", width=15, anchor='e')
+label_W0 = tk.Label(Right_Frame, text=f"(x\u2080, y\u2080) = ", width=10, anchor='e')
+label_W1 = tk.Label(Right_Frame, text=f"(x\u2081, y\u2081) = ", width=10, anchor='e')
+label_W2 = tk.Label(Right_Frame, text=f"(x\u2082, y\u2082) = ", width=10, anchor='e')
 label_W01 = tk.Label(Right_Frame, text="(0, 0)", width=10, anchor='w')
-label_W11 = tk.Label(Right_Frame, textvariable=W1, width=10, anchor='w')
-label_W21 = tk.Label(Right_Frame, textvariable=W2, width=10, anchor='w')
+label_W11 = tk.Label(Right_Frame, textvariable=W1, width=20, anchor='w')
+label_W21 = tk.Label(Right_Frame, textvariable=W2, width=20, anchor='w')
 Button_calc_coord = tk.Button(Right_Frame,
                               text= "Pokaż podgląd",
                               command=checkvariables,
