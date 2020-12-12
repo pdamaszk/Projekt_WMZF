@@ -2,10 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from numpy import sin,cos
+import numpy as np
 
+y = True
 def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     from numpy import sin, cos
-    import numpy as np
+
     import matplotlib.pyplot as plt
     import scipy.integrate as integrate
     import matplotlib.animation as animation
@@ -58,6 +60,7 @@ def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     state = np.radians([th1, w1, th2, w2])
 
     # integrate your ODE using scipy.integrate.
+    global y
     y = integrate.odeint(pochodna, state, t)
 
     x1 = L1*sin(y[:, 0])
@@ -70,12 +73,12 @@ def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.1*(L1+L2), 1.1*(L1+L2)), ylim=(-1.1*(L1+L2), L1+0.5*L2))
     # ax.set_ylim([-1.1*(L1+L2), 1.1*L1])
     # ax.set_xlim([-1.1*(L1 + L2), 1.1*(L1+L2)])
-
+    # print(np.size(y))
     ax.set_aspect('equal')
     ax.grid()
 
     line, = ax.plot([], [], 'o-', lw=2)
-    time_template = 'time = %.1fs'
+    time_template = 'time = %.2fs'
     time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
 
 
@@ -425,9 +428,11 @@ nb.enable_traversal()
 # button_2 = tk.Button(sq_frame2)
 # button_2.grid(row=0, column=0, sticky='n')
 
+
 # kursor na pole Entry_L1
 Entry_L1.focus()
 # zbieranie danych o wcisnietym klawiszu
 Window_wahadlo.bind("<Key>", eventEnter)
 
 Window_wahadlo.mainloop()
+print(np.size(y))
