@@ -14,6 +14,7 @@ w2 = 0.0  # [m/s]         prędkość poczatkowa drugiego wahadla
 
 dt = 0.02  # [s]           delta - dokładność obliczeń
 time = 20
+trail = 6
 
 color_linia1 = '#0000ff'
 color_linia2 = '#ff8000'
@@ -45,11 +46,13 @@ def help_text_f3():
         Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         f3_entry_bright.config(state='normal')
+        f3_entry_length.config(state='normal')
         return
     if var_f3.get()==2:
         Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         f3_entry_bright.config(state='disabled')
+        f3_entry_length.config(state='disabled')
         return
     # if var.get()==3:
     #     Help_label.config(text="Energia kin. i pot. \n-numeryczne obliczenia, \n wykres energii poten.\n i kinet. wzgledem czasu")
@@ -196,8 +199,6 @@ def symulacja(L1, L2):
         # return scat, time_text
 
     def animate(i):
-        trail1 = 20  # ślad masy1 1
-        trail2 = 30  # ślad masy1 2
 
         thisx = [0, x1[i]]
         thisy = [0, y1[i]]
@@ -205,6 +206,8 @@ def symulacja(L1, L2):
         thisy2 = [y1[i], y2[i]]
 
         if var_f3.get() == 1:
+            trail1 = int(f3_entry_length.get()) * 3  # ślad masy1 1
+            trail2 = int(f3_entry_length.get()) * 5  # ślad masy1 2
             line01.set_data(x1[i:max(1, i - trail1):-1], y1[i:max(1, i - trail1):-1])  # marker + line of first weight
             line02.set_data(x2[i:max(1, i - trail2):-1], y2[i:max(1, i - trail2):-1])  # marker + line of the second weight
 
@@ -372,6 +375,44 @@ def checkvariables(keypressed=False):
         return
 
     try:
+        time = float(f2_entry_time.get())
+        if time > 1000 or time < 1:
+            f2_entry_time.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość czasu\t")
+            Help_label.config(text=" Niepoprawna wartość\n czasu wyszedłeś poza\n przedział \nod 1 do 1000 (sekund)")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f2)
+            f2_entry_time.focus()
+            return
+    except:
+        f2_entry_time.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość czasu\t")
+        Help_label.config(text=" Niepoprawna wartość\n czasu")
+        Help_label.config(fg=test_colours['error'][1], font=info_font)
+        nb.select(f2)
+        f2_entry_time.focus()
+        return
+
+    try:
+        dt = float(f2_entry_dt.get())
+        if dt > 0.1 or dt < 0.005:
+            f2_entry_dt.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość delta t\t")
+            Help_label.config(text=" Niepoprawna wartość\n delta t\n przekroczyłeś przedział\n od 0.005 do 0.1")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f2)
+            f2_entry_dt.focus()
+            return
+    except:
+        f2_entry_dt.delete(0, tk.END)
+        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość delta t\t")
+        Help_label.config(text=" Niepoprawna wartość\n delta t\n przekroczyłeś przedział\n od 0.005 do 0.1")
+        Help_label.config(fg=test_colours['error'][1], font=info_font)
+        nb.select(f2)
+        f2_entry_dt.focus()
+        return
+
+    try:
         bright = float(f3_entry_bright.get())
         if bright > 1 or bright < 0:
             f3_entry_bright.delete(0, tk.END)
@@ -381,16 +422,34 @@ def checkvariables(keypressed=False):
             nb.select(f3)
             f3_entry_bright.focus()
             return
-
-
     except:
         if var_f3.get() == 1:
             f3_entry_bright.delete(0, tk.END)
             messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość współczynnika śladu\t")
-            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu")
+            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu\n wpisz wartość\n od 0 do 1")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f3)
             f3_entry_bright.focus()
+            return
+
+    try:
+        length = int(f3_entry_length.get())
+        if length > 1000 or length < 0:
+            f3_entry_length.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość dłuości śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n długości śladu\n przekroczyłeś przedział\n od 0 do 1000")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f3)
+            f3_entry_length.focus()
+            return
+    except:
+        if var_f3.get() == 1:
+            f3_entry_length.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość dłuości śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n dłuości śladu\n wpisz liczbę całk.\n od 0 do 1000")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f3)
+            f3_entry_length.focus()
             return
 
     Help_label.config(text=" Dane wprowadzone\n poprawnie")
@@ -621,16 +680,19 @@ f2_linia2_color.grid(row=1, column=1)
 f2_linia2_b = tk.Button(f2, width=10, height=0, command=linia2, text="Zmień")
 f2_linia2_b.grid(row=1, column=2)
 
-f2_time = tk.Label(f2, text="  czas w s")
-f2_time.grid(row=0, column=3)
-f2_entry_time = tk.Entry(f2, width=5)
+var_f2_time = tk.StringVar()
+
+f2_time = tk.Label(f2, text=" czas [s] ")
+f2_time.grid(row=0, column=3, sticky='ne')
+f2_entry_time = tk.Entry(f2, width=5, textvariable=var_f2_time)
 f2_entry_time.grid(row=0, column=4)
 # f2_entry.delete(0, END)
-f2_entry_time.insert(0, time)
 
-f2_dt = tk.Label(f2, text="  dt")
-f2_dt.grid(row=1, column=3)
-f2_entry_dt = tk.Entry(f2, width=5)
+var_f2_dt = tk.StringVar()
+
+f2_dt = tk.Label(f2, text=" dt [s]")
+f2_dt.grid(row=1, column=3, sticky='ne')
+f2_entry_dt = tk.Entry(f2, width=5, textvariable=var_f2_dt)
 f2_entry_dt.grid(row=1, column=4)
 # f2_entry.delete(0, END)
 # f2_entry_dt.insert(0, dt)
@@ -639,7 +701,7 @@ f2_entry_dt.grid(row=1, column=4)
 nb.add(f2, text="Ustawienia")
 # Tworzenie trzeciej zakładki
 f3 = tk.Frame(nb)
-f1_menu3_1 = tk.Label(f3, text=" ślad wahadeł ",  width=0, height=0)
+f1_menu3_1 = tk.Label(f3, text=" Ślad wahadeł ",  width=0, height=0)
 f1_menu3_1.grid(row=0, column=0, sticky='nw')
 
 var_f3 = tk.IntVar(value=1)
@@ -649,17 +711,30 @@ f3_radiobytton = tk.Radiobutton(f3, text="Wyłącz", variable=var_f3, value=2, c
 f3_radiobytton.grid(row=0, column=2, sticky='NW')
 
 f3_menu3_2 = tk.Label(f3, text=" Alfa śladu ",  width=0, height=0)
-f3_menu3_2.grid(row=1, column=0)
+f3_menu3_2.grid(row=1, column=0, sticky='nw')
 
 var_f3_bright = tk.StringVar()
 f3_entry_bright = tk.Entry(f3, borderwidth=2, width=5, state='normal',
                            textvariable=var_f3_bright)
+f3_entry_bright.grid(row=1, column=1)
+
+
+f3_menu3_3 = tk.Label(f3, text=" Długość śladu ",  width=0, height=0)
+f3_menu3_3.grid(row=2, column=0, sticky='nw')
+
+var_f3_length = tk.StringVar()
+f3_entry_length = tk.Entry(f3, borderwidth=2, width=5, state='normal',
+                           textvariable=var_f3_length)
+f3_entry_length.grid(row=2, column=1)
+
 if read_config==0:
     f3_entry_bright.insert('end', str(bright))
+    f3_entry_length.insert('end', str(trail))
     f2_entry_dt.insert(0, dt)
+    f2_entry_time.insert(0, time)
     read_config = 1
 f3_entry_bright.grid(row=1, column=1)
-state='disabled'
+
 
 # Dodawanie trzeciej zakładki
 nb.add(f3, text="Ustawienia animacji")
