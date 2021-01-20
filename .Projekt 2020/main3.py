@@ -17,6 +17,9 @@ time = 20
 
 color_linia1 = '#0000ff'
 color_linia2 = '#ff8000'
+read_config = 0
+
+bright = 0.5
 
 # y = True
 def time_array(time,dt):
@@ -27,12 +30,31 @@ def help_text():
     if var.get()==1:
         Help_label.config(text="Symulacja \n-numeryczne obliczenia \n symulacja położenia\n wahadła")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
+        return
     if var.get()==2:
         Help_label.config(text="Kąt i Predkóść kątowa \n-numeryczne obliczenia, \n wykres położenia\n i pędkości kątowej\n wzgledem czasu")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
+        return
     if var.get()==3:
         Help_label.config(text="Energia kin. i pot. \n-numeryczne obliczenia, \n wykres energii poten.\n i kinet. wzgledem czasu")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
+        return
+
+def help_text_f3():
+    if var_f3.get()==1:
+        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
+        Help_label.config(fg=test_colours['normal'][1], font=info_font)
+        f3_entry_bright.config(state='normal')
+        return
+    if var_f3.get()==2:
+        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
+        Help_label.config(fg=test_colours['normal'][1], font=info_font)
+        f3_entry_bright.config(state='disabled')
+        return
+    # if var.get()==3:
+    #     Help_label.config(text="Energia kin. i pot. \n-numeryczne obliczenia, \n wykres energii poten.\n i kinet. wzgledem czasu")
+    #     Help_label.config(fg=test_colours['normal'][1], font=info_font)
+    #     return
 
 def wybor_wykresu():
     # print(var.get())
@@ -119,6 +141,7 @@ def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     global y
     y = integrate.odeint(system_of_equasionts, state, t)
 
+
 def symulacja(L1, L2):
 
     import matplotlib.pyplot as plt
@@ -132,8 +155,15 @@ def symulacja(L1, L2):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.1*(L1+L2), 1.1*(L1+L2)), ylim=(-1.1*(L1+L2), 1.1*(L1+L2)))
-    # ax.set_aspect('equal')
+    ax.set_aspect('equal')
     # ax.grid(b=None)
+
+    if var_f3.get() == 1:
+        bright = float(f3_entry_bright.get())
+        line01, = ax.plot([], [], 'o-', markersize=1, lw=1, markevery=10000)
+        line01.set_color(lighten_color(f2_linia1_color['background'], bright))
+        line02, = ax.plot([], [], 'o-', markersize=12, lw=1, markevery=10000)  # line for Jupiter
+        line02.set_color(lighten_color(f2_linia2_color['background'], bright))
 
     line, = ax.plot([], [], 'o-', lw=5, markersize=14)
     line.set_color(f2_linia1_color['background'])
@@ -151,26 +181,40 @@ def symulacja(L1, L2):
                         fontsize=16)
 
     def init():
+        if var_f3.get() == 1:
+            line01.set_data([], [])
+            line02.set_data([], [])
         line.set_data([], [])
         line4.set_data([], [])
         line2.set_data([], [])
         line3.set_data([], [])
         time_text.set_text('')
-        return line, line2, line3, line4, time_text
+        if var_f3.get() == 1:
+            return line01, line02, line, line2, line3, line4, time_text
+        return  line, line2, line3, line4, time_text
         # return scat, time_text
 
     def animate(i):
+        trail1 = 20  # ślad masy1 1
+        trail2 = 30  # ślad masy1 2
+
         thisx = [0, x1[i]]
         thisy = [0, y1[i]]
         thisx2 = [x1[i], x2[i]]
         thisy2 = [y1[i], y2[i]]
+
+        if var_f3.get() == 1:
+            line01.set_data(x1[i:max(1, i - trail1):-1], y1[i:max(1, i - trail1):-1])  # marker + line of first weight
+            line02.set_data(x2[i:max(1, i - trail2):-1], y2[i:max(1, i - trail2):-1])  # marker + line of the second weight
 
         line.set_data(thisx, thisy)
         line4.set_data(0, 0)
         line2.set_data(thisx2, thisy2)
         line3.set_data(x1[i], y1[i])
         time_text.set_text(time_template % (i*dt))
-        return line, line2, line3, line4, time_text
+        if var_f3.get() == 1:
+            return line01, line02, line, line2, line3, line4, time_text
+        return  line, line2, line3, line4, time_text
         # return scat, time_text
 
     ani = animation.FuncAnimation(fig, animate, range(1, len(y)), interval=dt*800, blit=True, init_func=init)
@@ -326,10 +370,32 @@ def checkvariables(keypressed=False):
         Entry_M2.focus()
         return
 
+    try:
+        bright = float(f3_entry_bright.get())
+    except:
+        if var_f3.get() == 1:
+            f3_entry_bright.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość współczynnika śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f3)
+            f3_entry_bright.focus()
+            return
+
     Help_label.config(text=" Dane wprowadzone\n poprawnie")
     Help_label.config(fg=test_colours['info'][1], font=info_font)
 
     return True
+
+def lighten_color(color, amount=0.5):
+    import matplotlib.colors as mc
+    import colorsys
+    try:
+        c = mc.cnames[color]
+    except:
+        c = color
+    c = colorsys.rgb_to_hls(*mc.to_rgb(c))
+    return colorsys.hls_to_rgb(c[0], 1 - amount * (1 - c[1]), c[2])
 
 # definicja trybu testowego - testowanie zawartosci okna
 def test_interfecu():
@@ -562,17 +628,35 @@ f2_entry_dt.insert(0, dt)
 nb.add(f2, text="Ustawienia")
 # Tworzenie trzeciej zakładki
 f3 = tk.Frame(nb)
-f1_menu3 = tk.Label(f3, text="może zrobię", font=title_font, bg='white', width=25, height=3)
-f1_menu3.grid(row=0, column=0)
+f1_menu3_1 = tk.Label(f3, text=" ślad wahadeł ",  width=0, height=0)
+f1_menu3_1.grid(row=0, column=0, sticky='nw')
+
+var_f3 = tk.IntVar(value=1)
+f3_radiobytton = tk.Radiobutton(f3, text="Włącz", variable=var_f3, value=1, command=help_text_f3)
+f3_radiobytton.grid(row=0, column=1, sticky='NW')
+f3_radiobytton = tk.Radiobutton(f3, text="Wyłącz", variable=var_f3, value=2, command=help_text_f3)
+f3_radiobytton.grid(row=0, column=2, sticky='NW')
+
+f3_menu3_2 = tk.Label(f3, text=" rozwycie śladu ",  width=0, height=0)
+f3_menu3_2.grid(row=1, column=0)
+
+var_f3_bright = tk.StringVar()
+f3_entry_bright = tk.Entry(f3, borderwidth=2, width=10, state='normal',
+                           textvariable=var_f3_bright)
+if read_config==0:
+    f3_entry_bright.insert('end', str(bright))
+    read_config = 1
+f3_entry_bright.grid(row=1, column=1)
+state='disabled'
 
 # Dodawanie trzeciej zakładki
 nb.add(f3, text="Ustawienia animacji")
 
 nb.select(f1)
 
-if nb.select():
-    idx = nb.index('current')
-    print(idx)
+# if nb.select():
+#     idx = nb.index('current')
+#     print(idx)
 
 nb.enable_traversal()
 
@@ -598,7 +682,7 @@ Help_label.pack()
 # print(Entry_L1.get())
 # button_2 = tk.Button(sq_frame2)
 # button_2.grid(row=0, column=0, sticky='n')
-
+# print(f3_entry_bright.get())
 # kursor na pole Entry_L1
 Entry_L1.focus()
 # zbieranie danych o wcisnietym klawiszu
@@ -606,4 +690,4 @@ Window_wahadlo.bind("<Key>", eventEnter)
 
 Window_wahadlo.mainloop()
 
-# print(y)
+
