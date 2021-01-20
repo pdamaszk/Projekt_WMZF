@@ -425,6 +425,8 @@ nb.select(f1)
 
 nb.enable_traversal()
 
+
+print(Entry_L1.get())
 # button_2 = tk.Button(sq_frame2)
 # button_2.grid(row=0, column=0, sticky='n')
 
@@ -435,4 +437,5 @@ Entry_L1.focus()
 Window_wahadlo.bind("<Key>", eventEnter)
 
 Window_wahadlo.mainloop()
-print(np.size(y))
+
+print(y)

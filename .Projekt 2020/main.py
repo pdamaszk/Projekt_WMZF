@@ -102,7 +102,12 @@ def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     plt.show()
 
 def rysuj():
-    double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()), float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
+    while True:
+        checkvariables()
+        if wyjsc == True:
+            double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()),
+                               float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
+            break
 
 # definicja icony okna
 def pull_icon(root,icon):
@@ -180,11 +185,12 @@ def eventEnter(event):
 def checkvariables():
     try:
         L1 = float(Entry_L1.get())
+        print(float(Entry_L1.get()))
     except:
         # Entry_L1.delete(0, tk.END)
         messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna długość ramienia górnego wahadła\t")
         Entry_L1.focus()
-        return
+        return False
 
     try:
         Th1 = float(Entry_Th1.get())
@@ -193,7 +199,7 @@ def checkvariables():
         # Entry_Th1.delete(0, tk.END)
         messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawny kąt górnego wahadła\t")
         Entry_Th1.focus()
-        return
+        return False
 
     try:
         L2 = float(Entry_L2.get())
@@ -201,7 +207,7 @@ def checkvariables():
         # Entry_L2.delete(0, tk.END)
         messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawae długość ramienia dolnego wahadła\t")
         Entry_L2.focus()
-        return
+        return False
     try:
         Th2 = float(Entry_Th2.get())
         Calc_please(L1, Th1, L2, Th2)
@@ -209,7 +215,7 @@ def checkvariables():
         # Entry_Th2.delete(0, tk.END)
         messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawny kąt dolnego wahadła\t")
         Entry_Th2.focus()
-        return
+        return False
     if keypressed:
         try:
             M1 = float(Entry_M1.get())
@@ -217,15 +223,15 @@ def checkvariables():
             Entry_M1.delete(0, tk.END)
             messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość masy górnego wahadła\t")
             Entry_M1.focus()
-            return
+            return False
         try:
             M2 = float(Entry_M2.get())
         except:
             Entry_M2.delete(0, tk.END)
             messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość masy dolnego wahadła\t")
             Entry_M2.focus()
-            return
-
+            return False
+        return True
 
 
 # definicja trybu testowego - testowanie zawartosci okna
@@ -435,4 +441,3 @@ Entry_L1.focus()
 Window_wahadlo.bind("<Key>", eventEnter)
 
 Window_wahadlo.mainloop()
-print(np.size(y))
