@@ -12,14 +12,14 @@ G = 9.8  # [m/s^2]       przyspieszenie ziemskie
 w1 = 0.0  # [m/s]         prędkość poczatkowa pierwszego wahadla
 w2 = 0.0  # [m/s]         prędkość poczatkowa drugiego wahadla
 
-dt = 0.05  # [s]           delta - dokładność obliczeń
+dt = 0.02  # [s]           delta - dokładność obliczeń
 time = 20
 
 color_linia1 = '#0000ff'
 color_linia2 = '#ff8000'
 read_config = 0
 
-bright = 0.5
+bright = 0.3
 
 # y = True
 def time_array(time,dt):
@@ -108,7 +108,7 @@ def double_pen_ani_wyk(L1, th1, M1, L2, th2, M2):
     # th2 = -90.0     # [stopnie]     kąt nachylenia drugiego wahadla
     # M2 = 2.0        # [kg]          masa drugiego wahadla
     global t
-    t = np.arange(0, int(f2_entry_time.get()), float(f2_entry_dt.get()))
+    t = time_array(int(f2_entry_time.get()), float(f2_entry_dt.get()))
 
     def system_of_equasionts(state, t):
 
@@ -146,6 +146,7 @@ def symulacja(L1, L2):
 
     import matplotlib.pyplot as plt
     import matplotlib.animation as animation
+    # from matplotlib.animation import Writer
 
     x1 = L1*sin(y[:, 0])
     y1 = -L1*cos(y[:, 0])
@@ -160,9 +161,9 @@ def symulacja(L1, L2):
 
     if var_f3.get() == 1:
         bright = float(f3_entry_bright.get())
-        line01, = ax.plot([], [], 'o-', markersize=1, lw=1, markevery=10000)
+        line01, = ax.plot([], [], 'o-', markersize=1, lw=3, markevery=10000)
         line01.set_color(lighten_color(f2_linia1_color['background'], bright))
-        line02, = ax.plot([], [], 'o-', markersize=12, lw=1, markevery=10000)  # line for Jupiter
+        line02, = ax.plot([], [], 'o-', markersize=12, lw=3, markevery=10000)  # line for Jupiter
         line02.set_color(lighten_color(f2_linia2_color['background'], bright))
 
     line, = ax.plot([], [], 'o-', lw=5, markersize=14)
@@ -211,13 +212,13 @@ def symulacja(L1, L2):
         line4.set_data(0, 0)
         line2.set_data(thisx2, thisy2)
         line3.set_data(x1[i], y1[i])
-        time_text.set_text(time_template % (i*dt))
+        time_text.set_text(time_template % (i*float(f2_entry_dt.get())))
         if var_f3.get() == 1:
             return line01, line02, line, line2, line3, line4, time_text
         return  line, line2, line3, line4, time_text
         # return scat, time_text
-
-    ani = animation.FuncAnimation(fig, animate, range(1, len(y)), interval=dt*800, blit=True, init_func=init)
+    by_time = float(f2_entry_dt.get())*800
+    ani = animation.FuncAnimation(fig, animate, range(1, len(y)), interval=by_time, blit=True, init_func=init)
     plt.show()
 
 def callback(color):
@@ -372,6 +373,16 @@ def checkvariables(keypressed=False):
 
     try:
         bright = float(f3_entry_bright.get())
+        if bright > 1 or bright < 0:
+            f3_entry_bright.delete(0, tk.END)
+            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość współczynnika śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu\n przekroczyłeś przedział\n od 0 do 1")
+            Help_label.config(fg=test_colours['error'][1], font=info_font)
+            nb.select(f3)
+            f3_entry_bright.focus()
+            return
+
+
     except:
         if var_f3.get() == 1:
             f3_entry_bright.delete(0, tk.END)
@@ -622,7 +633,7 @@ f2_dt.grid(row=1, column=3)
 f2_entry_dt = tk.Entry(f2, width=5)
 f2_entry_dt.grid(row=1, column=4)
 # f2_entry.delete(0, END)
-f2_entry_dt.insert(0, dt)
+# f2_entry_dt.insert(0, dt)
 
 # Dodawanie drugiej zakładki
 nb.add(f2, text="Ustawienia")
@@ -637,14 +648,15 @@ f3_radiobytton.grid(row=0, column=1, sticky='NW')
 f3_radiobytton = tk.Radiobutton(f3, text="Wyłącz", variable=var_f3, value=2, command=help_text_f3)
 f3_radiobytton.grid(row=0, column=2, sticky='NW')
 
-f3_menu3_2 = tk.Label(f3, text=" rozwycie śladu ",  width=0, height=0)
+f3_menu3_2 = tk.Label(f3, text=" Alfa śladu ",  width=0, height=0)
 f3_menu3_2.grid(row=1, column=0)
 
 var_f3_bright = tk.StringVar()
-f3_entry_bright = tk.Entry(f3, borderwidth=2, width=10, state='normal',
+f3_entry_bright = tk.Entry(f3, borderwidth=2, width=5, state='normal',
                            textvariable=var_f3_bright)
 if read_config==0:
     f3_entry_bright.insert('end', str(bright))
+    f2_entry_dt.insert(0, dt)
     read_config = 1
 f3_entry_bright.grid(row=1, column=1)
 state='disabled'
