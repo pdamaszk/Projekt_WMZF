@@ -30,21 +30,25 @@ def time_array(time,dt):
 
 def help_text():
     if var.get()==1:
-        Help_label.config(text="Symulacja \n-numeryczne obliczenia \n symulacja położenia\n wahadła")
+        Help_label.config(text="Symulacja \n-numeryczne obliczenia "
+                               "\n symulacja położenia\n wahadła")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         return
     if var.get()==2:
-        Help_label.config(text="Kąt i Predkóść kątowa \n-numeryczne obliczenia, \n wykres położenia\n i pędkości kątowej\n wzgledem czasu")
+        Help_label.config(text="Kąt i Predkóść kątowa \n-numeryczne obliczenia, "
+                               "\n wykres położenia\n i pędkości kątowej\n wzgledem czasu")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         return
     if var.get()==3:
-        Help_label.config(text="Energia kin. i pot. \n-numeryczne obliczenia, \n wykres energii poten.\n i kinet. wzgledem czasu")
+        Help_label.config(text="Energia kin. i pot. \n-numeryczne obliczenia, "
+                               "\n wykres energii poten.\n i kinet. wzgledem czasu")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         return
 
 def help_text_f3():
     if var_f3.get()==1:
-        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
+        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia"
+                               "\n smuge (włącz/wyłącz)")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         f3_entry_bright.config(state='normal')
         f3_entry_length.config(state='normal')
@@ -52,7 +56,8 @@ def help_text_f3():
         f3_label_bright.config(fg=test_colours['normal'][1])
         return
     if var_f3.get()==2:
-        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia\n smuge (włącz/wyłącz)")
+        Help_label.config(text="Ślad wahadeł:  \n-wahadło pozostawia"
+                               "\n smuge (włącz/wyłącz)")
         Help_label.config(fg=test_colours['normal'][1], font=info_font)
         f3_entry_bright.config(state='disabled')
         f3_entry_length.config(state='disabled')
@@ -75,7 +80,8 @@ def wybor_wykresu():
 
 def rysuj():
     if checkvariables(True):
-        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()), float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
+        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()),
+                           float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
         symulacja(float(Entry_L1.get()), float(Entry_L2.get()))
 
 # def rysuj():
@@ -85,7 +91,8 @@ def rysuj():
 
 def polozenie_predkosc():
     if checkvariables(True):
-        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()), float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
+        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()),
+                           float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
         wykresy.multiplot(t, y[:, 0], y[:, 2],
                           t, y[:, 1], y[:, 3],
                           color1=f2_linia1_color['background'],
@@ -96,7 +103,8 @@ def polozenie_predkosc():
 
 def e_kin_e_pot():
     if checkvariables(True):
-        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()), float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
+        double_pen_ani_wyk(float(Entry_L1.get()), float(Entry_Th1.get()), float(Entry_M1.get()),
+                           float(Entry_L2.get()), float(Entry_Th2.get()), float(Entry_M2.get()))
         # energy1 = np.zeros(int(time*dt))
         # energy2 = np.zeros(int(time*dt))
         energia_kinetyczna1 = 1/2 * float(Entry_M1.get()) * (float(Entry_L1.get()) * y[:, 1])**2
@@ -168,7 +176,9 @@ def symulacja(L1, L2):
     y2 = -L2*cos(y[:, 2]) + y1
 
     fig = plt.figure()
-    ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.1*(L1+L2), 1.1*(L1+L2)), ylim=(-1.1*(L1+L2), 1.1*(L1+L2)))
+    ax = fig.add_subplot(111, autoscale_on=False,
+                         xlim=(-1.1*(L1+L2), 1.1*(L1+L2)),
+                         ylim=(-1.1*(L1+L2), 1.1*(L1+L2)))
     ax.set_aspect('equal')
     # ax.grid(b=None)
 
@@ -215,11 +225,13 @@ def symulacja(L1, L2):
         thisx2 = [x1[i], x2[i]]
         thisy2 = [y1[i], y2[i]]
 
+        # print(thisx)
+
         if var_f3.get() == 1:
             trail1 = int(f3_entry_length.get()) * 3  # ślad masy1 1
             trail2 = int(f3_entry_length.get()) * 5  # ślad masy1 2
-            line01.set_data(x1[i:max(1, i - trail1):-1], y1[i:max(1, i - trail1):-1])  # marker + line of first weight
-            line02.set_data(x2[i:max(1, i - trail2):-1], y2[i:max(1, i - trail2):-1])  # marker + line of the second weight
+            line01.set_data(x1[i:max(1, i - trail1):-1], y1[i:max(1, i - trail1):-1])  #
+            line02.set_data(x2[i:max(1, i - trail2):-1], y2[i:max(1, i - trail2):-1])  #
 
         line.set_data(thisx, thisy)
         line4.set_data(0, 0)
@@ -231,7 +243,10 @@ def symulacja(L1, L2):
         return  line, line2, line3, line4, time_text
         # return scat, time_text
     by_time = float(f2_entry_dt.get())*995
-    ani = animation.FuncAnimation(fig, animate, range(1, len(y)), interval=by_time, blit=True, init_func=init)
+    ani = animation.FuncAnimation(fig, animate, range(1, len(y)),
+                                  interval=by_time,
+                                  blit=True,
+                                  init_func=init)
     plt.show()
 
 def callback(color):
@@ -302,8 +317,8 @@ def draw_pendulum(x1, y1, x2, y2):
     C.create_line(coord1, fill='black', width=2)
     C.create_line(coord2, fill='black', width=2)
     create_circle(C,x0, y0, 3, fill="black", outline="black", width=1)
-    create_circle(C,x1, y1, 5, fill="blue", outline="black", width=2)
-    create_circle(C,x2, y2, 5, fill="red", outline="black", width=2)
+    create_circle(C,x1, y1, 5, fill=f2_linia1_color['background'], outline="black", width=2)
+    create_circle(C,x2, y2, 5, fill=f2_linia2_color['background'], outline="black", width=2)
 
 # rysowanie okręgu w oknie <canvas>
 def create_circle(self, x, y, r, **kwargs):
@@ -326,7 +341,8 @@ def checkvariables(keypressed=False):
         L1 = float(Entry_L1.get())
     except:
         # Entry_L1.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna długość ramienia górnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawna długość ramienia górnego wahadła\t")
         Help_label.config(text=" Niepoprawna długość \n ramienia górnego \n wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_L1.focus()
@@ -336,7 +352,8 @@ def checkvariables(keypressed=False):
         Th1 = float(Entry_Th1.get())*np.pi/180
     except:
         # Entry_Th1.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawny kąt górnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawny kąt górnego wahadła\t")
         Help_label.config(text=" Niepoprawny kąt \n górnego wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_Th1.focus()
@@ -347,7 +364,8 @@ def checkvariables(keypressed=False):
         M1 = float(Entry_M1.get())
     except:
         Entry_M1.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość masy górnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawna wartość masy górnego wahadła\t")
         Help_label.config(text=" Niepoprawna wartość\n masy górnego wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_M1.focus()
@@ -357,7 +375,8 @@ def checkvariables(keypressed=False):
         L2 = float(Entry_L2.get())
     except:
         # Entry_L2.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawae długość ramienia dolnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawae długość ramienia dolnego wahadła\t")
         Help_label.config(text=" Niepoprawae długość\n ramienia dolnego \n wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_L2.focus()
@@ -368,7 +387,8 @@ def checkvariables(keypressed=False):
         Calc_please(L1, Th1, L2, Th2)
     except:
         # Entry_Th2.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawny kąt dolnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawny kąt dolnego wahadła\t")
         Help_label.config(text=" Niepoprawny kąt\n dolnego wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_Th2.focus()
@@ -378,7 +398,8 @@ def checkvariables(keypressed=False):
         M2 = float(Entry_M2.get())
     except:
         Entry_M2.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość masy dolnego wahadła\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawna wartość masy dolnego wahadła\t")
         Help_label.config(text=" Niepoprawna wartość\n masy dolnego wahadła")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         Entry_M2.focus()
@@ -388,7 +409,8 @@ def checkvariables(keypressed=False):
         time = float(f2_entry_time.get())
         if time > 1000 or time < 1:
             f2_entry_time.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość czasu\t")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość czasu\t")
             Help_label.config(text=" Niepoprawna wartość\n czasu wyszedłeś poza\n przedział \nod 1 do 1000 (sekund)")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f2)
@@ -396,7 +418,8 @@ def checkvariables(keypressed=False):
             return
     except:
         f2_entry_time.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość czasu\t")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawna wartość czasu\t")
         Help_label.config(text=" Niepoprawna wartość\n czasu")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         nb.select(f2)
@@ -407,16 +430,20 @@ def checkvariables(keypressed=False):
         dt = float(f2_entry_dt.get())
         if dt > 0.1 or dt < 0.005:
             f2_entry_dt.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość delta t\t")
-            Help_label.config(text=" Niepoprawna wartość\n delta t\n przekroczyłeś przedział\n od 0.005 do 0.1")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość delta t\t")
+            Help_label.config(text=" Niepoprawna wartość\n delta t"
+                                   "\n przekroczyłeś przedział\n od 0.005 do 0.1")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f2)
             f2_entry_dt.focus()
             return
     except:
         f2_entry_dt.delete(0, tk.END)
-        messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość delta t\t")
-        Help_label.config(text=" Niepoprawna wartość\n delta t\n przekroczyłeś przedział\n od 0.005 do 0.1")
+        messagebox.showwarning(title="Ostzreżenie",
+                               message="\tNiepoprawna wartość delta t\t")
+        Help_label.config(text=" Niepoprawna wartość\n delta t"
+                               "\n przekroczyłeś przedział\n od 0.005 do 0.1")
         Help_label.config(fg=test_colours['error'][1], font=info_font)
         nb.select(f2)
         f2_entry_dt.focus()
@@ -426,8 +453,10 @@ def checkvariables(keypressed=False):
         bright = float(f3_entry_bright.get())
         if bright > 1 or bright < 0:
             f3_entry_bright.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość współczynnika śladu\t")
-            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu\n przekroczyłeś przedział\n od 0 do 1")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość współczynnika śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu"
+                                   "\n przekroczyłeś przedział\n od 0 do 1")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f3)
             f3_entry_bright.focus()
@@ -435,8 +464,10 @@ def checkvariables(keypressed=False):
     except:
         if var_f3.get() == 1:
             f3_entry_bright.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość współczynnika śladu\t")
-            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu\n wpisz wartość\n od 0 do 1")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość współczynnika śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n współczynnika śladu"
+                                   "\n wpisz wartość\n od 0 do 1")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f3)
             f3_entry_bright.focus()
@@ -446,8 +477,10 @@ def checkvariables(keypressed=False):
         length = int(f3_entry_length.get())
         if length > 1000 or length < 0:
             f3_entry_length.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość dłuości śladu\t")
-            Help_label.config(text=" Niepoprawna wartość\n długości śladu\n przekroczyłeś przedział\n od 0 do 1000")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość dłuości śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n długości śladu"
+                                   "\n przekroczyłeś przedział\n od 0 do 1000")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f3)
             f3_entry_length.focus()
@@ -455,8 +488,10 @@ def checkvariables(keypressed=False):
     except:
         if var_f3.get() == 1:
             f3_entry_length.delete(0, tk.END)
-            messagebox.showwarning(title="Ostzreżenie", message="\tNiepoprawna wartość dłuości śladu\t")
-            Help_label.config(text=" Niepoprawna wartość\n dłuości śladu\n wpisz liczbę całk.\n od 0 do 1000")
+            messagebox.showwarning(title="Ostzreżenie",
+                                   message="\tNiepoprawna wartość dłuości śladu\t")
+            Help_label.config(text=" Niepoprawna wartość\n dłuości śladu"
+                                   "\n wpisz liczbę całk.\n od 0 do 1000")
             Help_label.config(fg=test_colours['error'][1], font=info_font)
             nb.select(f3)
             f3_entry_length.focus()
@@ -622,7 +657,7 @@ label_W11 = tk.Label(Right_Frame, textvariable=W1, width=10, anchor='w')
 label_W21 = tk.Label(Right_Frame, textvariable=W2, width=10, anchor='w')
 
 Button_calc_coord = tk.Button(Right_Frame,
-                              text= "Pokaż podgląd",
+                              text= "Podgląd",
                               command=checkvariables,
                               padx=10,
                               pady=2,
@@ -639,10 +674,16 @@ label_W21.grid(row=3, column=1, sticky='w')
 
 Button_calc_coord.grid(row=4, column=0, columnspan=2)
 
-Window_Frame_bottom = tk.Frame(Window_wahadlo, padx=5, pady=5, bg=test_colours['botton'][test_id], width=700, height=200)
+Window_Frame_bottom = tk.Frame(Window_wahadlo,
+                               padx=5, pady=5,
+                               bg=test_colours['botton'][test_id],
+                               width=700, height=200)
 Window_Frame_bottom.grid(row=2, column=0, columnspan=2, sticky='w')
 # Okno Notebook
-Bottom_Frame = tk.LabelFrame(Window_Frame_bottom, padx=5, pady=5, text="", font=sub_font)
+Bottom_Frame = tk.LabelFrame(Window_Frame_bottom,
+                             padx=5, pady=5,
+                             text="",
+                             font=sub_font)
 Bottom_Frame.grid(row=0, column=0)
 
 # Notebook
@@ -653,11 +694,14 @@ nb.grid(row=0, column=0, columnspan=2, sticky='NEWS')
 f1 = tk.Frame(nb)
 
 var = tk.IntVar(value=1)
-f1_radiobytton = tk.Radiobutton(f1, text="Symulacja", variable=var, value=1, command=help_text)
+f1_radiobytton = tk.Radiobutton(f1, text="Symulacja",
+                                variable=var, value=1, command=help_text)
 f1_radiobytton.grid(row=1, column=0, sticky='NW')
-f1_radiobytton = tk.Radiobutton(f1, text="kąt i prędkość kątowa", variable=var, value=2, command=help_text)
+f1_radiobytton = tk.Radiobutton(f1, text="kąt i prędkość kątowa",
+                                variable=var, value=2, command=help_text)
 f1_radiobytton.grid(row=2, column=0, sticky='NW')
-f1_radiobytton = tk.Radiobutton(f1, text="Energia kinetyczna i potencjalna", variable=var, value=3, command=help_text)
+f1_radiobytton = tk.Radiobutton(f1, text="Energia kinetyczna i potencjalna",
+                                variable=var, value=3, command=help_text)
 f1_radiobytton.grid(row=3, column=0, sticky='NW', columnspan=2)
 
 # f1_chackbutton = tk.Checkbutton(f1, text="Video")
@@ -716,9 +760,11 @@ f1_menu3_1 = tk.Label(f3, text=" Ślad wahadeł ",  width=0, height=0)
 f1_menu3_1.grid(row=0, column=0, sticky='nw')
 
 var_f3 = tk.IntVar(value=1)
-f3_radiobytton = tk.Radiobutton(f3, text="Włącz", variable=var_f3, value=1, command=help_text_f3)
+f3_radiobytton = tk.Radiobutton(f3, text="Włącz",
+                                variable=var_f3, value=1, command=help_text_f3)
 f3_radiobytton.grid(row=0, column=1, sticky='NW')
-f3_radiobytton = tk.Radiobutton(f3, text="Wyłącz", variable=var_f3, value=2, command=help_text_f3)
+f3_radiobytton = tk.Radiobutton(f3, text="Wyłącz",
+                                variable=var_f3, value=2, command=help_text_f3)
 f3_radiobytton.grid(row=0, column=2, sticky='NW')
 
 f3_label_bright = tk.Label(f3, text=" Alfa śladu ",  width=0, height=0)
@@ -762,13 +808,18 @@ nb.enable_traversal()
 # Window_Frame_bottom.grid(row=2, column=2)
 
 # odstęp
-Bottom_Frame_middle = tk.Label(Window_Frame_bottom, padx=5, pady=5, font=sub_font)
+Bottom_Frame_middle = tk.Label(Window_Frame_bottom,
+                               padx=5, pady=5,
+                               font=sub_font)
 Bottom_Frame_middle.grid(row=0, column=1, sticky='NEWS')
 Help_label = tk.Label(Bottom_Frame_middle, text=" ", width=1)
 Help_label.grid(row=0, column=0, sticky='NEWS')
 
 # Pomoc
-Bottom_Frame_right = tk.LabelFrame(Window_Frame_bottom, text="Pomoc", padx=5, pady=5, font=sub_font)
+Bottom_Frame_right = tk.LabelFrame(Window_Frame_bottom,
+                                   text="Pomoc",
+                                   padx=5, pady=5,
+                                   font=sub_font)
 Bottom_Frame_right.grid(row=0, column=2, sticky='NW')
 
 Help_label = tk.Label(Bottom_Frame_right,
